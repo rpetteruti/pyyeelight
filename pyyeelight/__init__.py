@@ -1,2 +1,2 @@
 def joke():
-  print("HAH")
+  return "HAH"
