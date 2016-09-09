@@ -38,19 +38,19 @@ class YeelightBulb:
 
 
       
-    def isOn(self):
-      if state == 0:
-        return False
-      if state == 1:
-        return True
-        
-    
-    def turnOn(self):
-      self.operate_on_bulb("set_power","on")
-        
-    def turnOff(self):
-      self.operate_on_bulb("set_power","off")
+      def isOn(self):
+        if state == 0:
+          return False
+        if state == 1:
+          return True
+          
       
-    def setBrightness(self,brightness):
-      self.brightness = brightness
-      self.operate_on_bulb("bright",round(self.brightness/255*199))
+      def turnOn(self):
+        self.operate_on_bulb("set_power","on")
+          
+      def turnOff(self):
+        self.operate_on_bulb("set_power","off")
+        
+      def setBrightness(self,brightness):
+        self.brightness = brightness
+        self.operate_on_bulb("bright",round(self.brightness/255*199))
