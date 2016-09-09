@@ -1,5 +1,5 @@
 from distutils.core import setup
-setup(name='yeelight_lib',
+setup(name='pyyeelight',
       version='1.0',
-      py_modules=['yeelight_lib'],
+      py_modules=['pyyeelight'],
       )
