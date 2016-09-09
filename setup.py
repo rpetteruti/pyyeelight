@@ -2,5 +2,6 @@ from distutils.core import setup, find_packages
 setup(name='pyyeelight',
       version='1.0',
       zip_safe=False,
-      packages=find_packages()
+      platforms=["any"],
+      packages=find_packages(),
       )
