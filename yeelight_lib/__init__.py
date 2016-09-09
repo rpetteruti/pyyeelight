@@ -1,4 +1,4 @@
-class LEDBulb:
+class YeelightBulb:
   
     
     def __init__(self, ipaddr, port=55443):
