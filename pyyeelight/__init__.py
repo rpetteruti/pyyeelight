@@ -74,7 +74,3 @@ class YeelightBulb:
         self.operate_on_bulb('set_bright', str(round(self.brightness
                              / 255 * 100)) + ',"smooth",'
                              + str(transtime))
-
-
-
-			
