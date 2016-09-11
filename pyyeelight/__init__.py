@@ -39,9 +39,8 @@ class YeelightBulb:
             tcp_socket.send(msg.encode())
             data = tcp_socket.recv(4096)
             tcp_socket.close()
-            print msg
             return data.decode()
-        except Exception, e:
+        except Exception as e:
             print ('Unexpected error:', e)
 
     def refreshState(self):
