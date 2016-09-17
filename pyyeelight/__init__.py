@@ -44,13 +44,16 @@ class YeelightBulb:
             print ('Unexpected error:', e)
 
     def refreshState(self):
-        data = json.loads(self.operate_on_bulb('get_prop',
-                          '"power","bright"'))
+      try:
+        data = json.loads(self.operate_on_bulb('get_prop', '"power", "bright"'))
         self.brightness = round(int(data['result'][1]) / 100 * 255)
         if data['result'][0] == 'on':
             self.state = 1
         else:
             self.state = 0
+       except TypeError as e:
+         print ('Unexpected error:', e)
+         
 
     def isOn(self):
         if self.state == 0:
