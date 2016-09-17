@@ -51,8 +51,8 @@ class YeelightBulb:
             self.state = 1
         else:
             self.state = 0
-       except TypeError as e:
-         print ('Unexpected error:', e)
+      except TypeError as e:
+        print ('Unexpected error:', e)
          
 
     def isOn(self):
