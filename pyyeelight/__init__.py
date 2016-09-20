@@ -9,8 +9,10 @@ class YeelightBulb:
         self.port = port
 
     brightness = 0
+    rgb = (0,0,0)
     current_command_id = 0
     state = 1
+    ct = 1700
 
     def next_cmd_id(self):
         self.current_command_id += 1
@@ -74,3 +76,16 @@ class YeelightBulb:
         self.operate_on_bulb('set_bright', str(round(self.brightness
                              / 255 * 100)) + ',"smooth",'
                              + str(transtime))
+                             
+    def setRgb(self, rgb, transtime):
+        self.rgb = rgb
+        rgb_value = (rgb[0]*65536)+(rgb[1]*256)+rgb[2]
+        self.operate_on_bulb('set_rgb', str(rgb_value) + ',"smooth",'
+                             + str(transtime))
+                             
+    def setColorTemp(self, ct, transtime):
+        self.ct = ct
+        ct_value = round((10**6)/ct)
+        self.operate_on_bulb('set_ct_abx', str(ct_value) + ',"smooth",'
+                             + str(transtime))
+                          
