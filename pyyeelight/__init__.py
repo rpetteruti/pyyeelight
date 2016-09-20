@@ -3,16 +3,19 @@ import socket
 
 
 class YeelightBulb:
-
-    def __init__(self, ipaddr, port=55443):
-        self.ipaddr = ipaddr
-        self.port = port
-
+  
     brightness = 0
     rgb = (0,0,0)
     current_command_id = 0
     state = 1
     ct = 1700
+    support_color_temp = False
+    support_rgb = False
+
+    def __init__(self, ipaddr, port=55443):
+        self.ipaddr = ipaddr
+        self.port = port
+        self.refreshState()
 
     def next_cmd_id(self):
         self.current_command_id += 1
@@ -32,8 +35,7 @@ class YeelightBulb:
         bulb_ip = self.ipaddr
         port = self.port
         try:
-            tcp_socket = socket.socket(socket.AF_INET,
-                    socket.SOCK_STREAM)
+            tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             print ('connect ', bulb_ip, port, '...')
             tcp_socket.connect((bulb_ip, int(port)))
             msg = '{"id":' + str(self.next_cmd_id()) + ',"method":"'
@@ -47,12 +49,18 @@ class YeelightBulb:
 
     def refreshState(self):
       try:
-        data = json.loads(self.operate_on_bulb('get_prop', '"power", "bright"'))
+        data = json.loads(self.operate_on_bulb('get_prop', '"power", "bright", ""model"'))
         self.brightness = round(int(data['result'][1]) / 100 * 255)
         if data['result'][0] == 'on':
             self.state = 1
         else:
             self.state = 0
+            
+        if "set_rgb" in data['result']['model']:
+            self.support_rgb = True
+        if "set_ct_abx" in data['result']['model']:
+            self.support_color_temp = True
+            
       except TypeError as e:
         print ('Unexpected error:', e)
          
