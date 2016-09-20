@@ -49,7 +49,7 @@ class YeelightBulb:
 
     def refreshState(self):
       try:
-        data = json.loads(self.operate_on_bulb('get_prop', '"power", "bright", ""model"'))
+        data = json.loads(self.operate_on_bulb('get_prop', '"power", "bright", "model"'))
         self.brightness = round(int(data['result'][1]) / 100 * 255)
         if data['result'][0] == 'on':
             self.state = 1
