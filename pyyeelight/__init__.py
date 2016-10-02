@@ -3,7 +3,7 @@ import socket
 
 
 class YeelightBulb:
-  
+
     brightness = 0
     rgb = (0,0,0)
     current_command_id = 0
@@ -48,22 +48,25 @@ class YeelightBulb:
             print ('Unexpected error:', e)
 
     def refreshState(self):
-      try:
-        data = json.loads(self.operate_on_bulb('get_prop', '"power", "bright", "model"'))
+        try:
+            data = json.loads(self.operate_on_bulb('get_prop', '"power", "bright", ""model"'))
+        except (TypeError, ValueError) as e:
+                print ('Unexpected error:', e)
+                return
+
         self.brightness = round(int(data['result'][1]) / 100 * 255)
         if data['result'][0] == 'on':
             self.state = 1
         else:
             self.state = 0
-            
+
         if "set_rgb" in data['result']['model']:
             self.support_rgb = True
         if "set_ct_abx" in data['result']['model']:
             self.support_color_temp = True
-            
-      except TypeError as e:
-        print ('Unexpected error:', e)
-         
+
+
+
 
     def isOn(self):
         if self.state == 0:
@@ -84,16 +87,15 @@ class YeelightBulb:
         self.operate_on_bulb('set_bright', str(round(self.brightness
                              / 255 * 100)) + ',"smooth",'
                              + str(transtime))
-                             
+
     def setRgb(self, rgb, transtime):
         self.rgb = rgb
         rgb_value = (rgb[0]*65536)+(rgb[1]*256)+rgb[2]
         self.operate_on_bulb('set_rgb', str(rgb_value) + ',"smooth",'
                              + str(transtime))
-                             
+
     def setColorTemp(self, ct, transtime):
         self.ct = ct
         ct_value = round((10**6)/ct)
         self.operate_on_bulb('set_ct_abx', str(ct_value) + ',"smooth",'
                              + str(transtime))
-                          
