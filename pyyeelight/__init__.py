@@ -74,13 +74,15 @@ class YeelightBulb:
         if self.state == 1:
             return True
 
-    def turnOn(self):
+    def turnOn(self, transtime, effect='sudden'):
         self.state = 1
-        self.operate_on_bulb('set_power', '"on","sudden",0')
+        self.operate_on_bulb('set_power', '"on","' + effect + '",'
+                            + str(transtime))
 
-    def turnOff(self):
+    def turnOff(self, transtime, effect='sudden'):
         self.state = 0
-        self.operate_on_bulb('set_power', '"off","sudden",0')
+        self.operate_on_bulb('set_power', '"off","' + effect + '",' 
+                            + str(transtime))
 
     def setBrightness(self, brightness, transtime):
         self.brightness = brightness
