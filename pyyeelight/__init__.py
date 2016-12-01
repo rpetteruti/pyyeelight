@@ -5,9 +5,9 @@ import socket
 class YeelightBulb:
 
     brightness = 0
-    rgb = (0,0,0)
+    rgb = (255,255,255)
     current_command_id = 0
-    state = 1
+    state = 0
     ct = 1700
     support_color_temp = False
     support_rgb = False
@@ -49,7 +49,7 @@ class YeelightBulb:
 
     def refreshState(self):
         try:
-            data = json.loads(self.operate_on_bulb('get_prop', '"power", "bright", ""model"'))
+            data = json.loads(self.operate_on_bulb('get_prop', '"power", "bright", "color_mode"'))
         except (TypeError, ValueError) as e:
                 print ('Unexpected error:', e)
                 return
@@ -60,10 +60,11 @@ class YeelightBulb:
         else:
             self.state = 0
 
-        if "set_rgb" in data['result']['model']:
-            self.support_rgb = True
-        if "set_ct_abx" in data['result']['model']:
+        if data['result'][2] == 2:
             self.support_color_temp = True
+        #    self.support_rgb = True
+        #if "set_ct_abx" in data['result']['model']:
+        #    self.support_color_temp = True
 
 
 
@@ -74,15 +75,13 @@ class YeelightBulb:
         if self.state == 1:
             return True
 
-    def turnOn(self, transtime, effect='sudden'):
+    def turnOn(self):
         self.state = 1
-        self.operate_on_bulb('set_power', '"on","' + effect + '",'
-                            + str(transtime))
+        self.operate_on_bulb('set_power', '"on","sudden",0')
 
-    def turnOff(self, transtime, effect='sudden'):
+    def turnOff(self):
         self.state = 0
-        self.operate_on_bulb('set_power', '"off","' + effect + '",' 
-                            + str(transtime))
+        self.operate_on_bulb('set_power', '"off","sudden",0')
 
     def setBrightness(self, brightness, transtime):
         self.brightness = brightness
